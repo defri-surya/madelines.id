@@ -35,7 +35,7 @@ class transaksiController extends Controller
                     'status_payment' => 'Sukses',
                 ]);
 
-                $histori = Histori::where('user_id', $value->user_id)->get();
+                $histori = Histori::where('user_id', $value->user_id)->first();
                 $histori->update([
                     'status' => 'Sukses'
                 ]);
