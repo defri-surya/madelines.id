@@ -161,7 +161,6 @@
 
         <!-- Content -->
         <div class="mt-2">
-
             <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-12 lg:space-y-0 lg:grid-cols-12">
                 <!-- Bar chart card -->
                 <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
@@ -177,6 +176,38 @@
                                 @include('user.anggota.tree', ['node' => $tree])
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-12 lg:space-y-0 lg:grid-cols-12">
+                <!-- Bar chart card -->
+                <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
+                    <!-- Card header -->
+                    <div class="flex items-center justify-between p-4 border-b dark:border-primary">
+                        <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Calon Member</h4>
+                    </div>
+                    <!-- Chart -->
+                    <div class="relative p-4">
+                        <table class="w-full table-auto">
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @forelse ($treeCM['user']['children'] as $child)
+                                    <tr>
+                                        <td>{{ $no++ }}.</td>
+                                        <td>{{ $child['user']['name'] }}</td>
+                                        <td>{{ $child['user']['referal'] }}</td>
+                                        <td>{{ $child['user']['no_hp'] }}</td>
+                                    </tr>
+                                @empty
+                                    <td colspan="5" class="text-center">
+                                        Tidak Ada Calon Member !
+                                    </td>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

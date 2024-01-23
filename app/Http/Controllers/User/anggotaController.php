@@ -55,10 +55,12 @@ class anggotaController extends Controller
                 ->where('status_akun', 'Calon Member')
                 ->get();
 
-            if ($childrenCM) {
+            if ($childrenCM->isNotEmpty()) {
                 foreach ($childrenCM as $childCM) {
                     $treeCM['user']['children'][] = $this->calonMember($childCM);
                 }
+            } else {
+                $treeCM['user']['children'] = [];
             }
         }
 
@@ -96,8 +98,9 @@ class anggotaController extends Controller
     {
         $user = User::where('referal', $id)->first();
         $tree = $this->buildTrees($user);
+        $treeCM = $this->calonMembers($user);
         // dd($tree);
-        return view('user.anggota.show', compact('tree'));
+        return view('user.anggota.show', compact('tree', 'treeCM'));
     }
 
     private function buildTrees($user)
@@ -119,6 +122,29 @@ class anggotaController extends Controller
         }
 
         return $tree;
+    }
+
+    private function calonMembers($user)
+    {
+        $treeCM = [];
+
+        if ($user) {
+            $treeCM['user'] = $user->toArray();
+
+            $childrenCM = User::where('by_referal', $user->referal)
+                ->where('status_akun', 'Calon Member')
+                ->get();
+
+            if ($childrenCM->isNotEmpty()) {
+                foreach ($childrenCM as $childCM) {
+                    $treeCM['user']['children'][] = $this->calonMembers($childCM);
+                }
+            } else {
+                $treeCM['user']['children'] = [];
+            }
+        }
+
+        return $treeCM;
     }
 
     /**

@@ -56,10 +56,12 @@
                                 required autofocus />
                             <input
                                 class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                                type="number" name="no_rekening" placeholder="Nomor Rekening Tujuan" required autofocus />
+                                type="number" name="no_rekening" placeholder="Nomor Rekening Tujuan"
+                                value="{{ $saldo->no_rekening }}" required autofocus />
                             <input
                                 class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                                type="text" name="atas_nama" placeholder="Atas Nama" required autofocus />
+                                type="text" name="atas_nama" placeholder="Atas Nama" value="{{ $saldo->atas_nama }}"
+                                required autofocus />
                             <div>
                                 <button type="submit"
                                     class="w-full px-4 py-2 font-medium text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">

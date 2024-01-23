@@ -34,7 +34,7 @@ class withdrawController extends Controller
         $withdraw = Withdraw::where('user_id', auth()->user()->id)->get();
         $totalWD = Withdraw::where('user_id', auth()->user()->id)->where('status', 'Sukses')->sum('nominal');
         $saldoEnd = $saldo->saldo - $totalWD;
-        return view('user.withdraw.create', compact('withdraw', 'saldoEnd'));
+        return view('user.withdraw.create', compact('withdraw', 'saldoEnd', 'saldo'));
     }
 
     /**
@@ -64,6 +64,12 @@ class withdrawController extends Controller
         $histori->keterangan = 'Withdraw';
         $histori->status = $data['status'];
         $histori->save();
+
+        $user = User::where('id', auth()->user()->id)->first();
+        $user->update([
+            'no_rekening' => $data['no_rekening'],
+            'atas_nama' => $data['atas_nama'],
+        ]);
 
         return redirect()->back();
     }
