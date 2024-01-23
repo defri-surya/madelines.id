@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\configController;
+use App\Http\Controllers\User\profilController;
 use App\Http\Controllers\User\TransaksiController;
 
 /*
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'referral'])->group(function () {
 // Payment
 Route::get('payment', [TransaksiController::class, 'payment'])->name('payment');
 Route::get('finishpayment', [TransaksiController::class, 'index']);
+
+// Setting Profil
+Route::get('setting-profil/{ref}', [profilController::class, 'edit']);
+Route::put('setting-update/{ref}', [profilController::class, 'update']);
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/user.php';

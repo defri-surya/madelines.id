@@ -4,28 +4,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MadeLines.id | Login</title>
+    <title>madelines.id | Login</title>
+    <meta name="description" content="madelines.id : Find a network and gain profits">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets') }}/images/madelines-ico.png">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets') }}/back-end/css/tailwind.css" />
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+
+    <style>
+        .custom-responsive-image {
+            max-width: 30%;
+        }
+
+        /* tampilan mobile */
+        @media only screen and (max-width: 640px) {
+            .custom-responsive-image {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
-    setColors(color);" :class="{ 'dark': isDark }">
+    setColors(color);" :class="{ 'dark': isDark }" style="background-color: #252222">
         <!-- Loading screen -->
         <div x-ref="loading"
             class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
             Loading.....
         </div>
         <div
-            class="flex flex-col items-center justify-center min-h-screen p-4 space-y-4 antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
+            class="flex flex-col items-center justify-center min-h-screen p-4 space-y-4 antialiased text-gray-900 bg-dark-100 dark:bg-dark dark:text-light">
             <!-- Brand -->
-            <a href="../index.html"
-                class="inline-block mb-6 text-3xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
-                MadeLines.id
-            </a>
+            <div class="mx-auto mb-6 custom-responsive-image">
+                <img src="{{ asset('assets/images/madeline-hr.png') }}" alt="">
+            </div>
             <main>
                 <div class="w-full max-w-sm px-4 py-6 space-y-6 bg-white rounded-md dark:bg-darker">
                     <h1 class="text-xl font-semibold text-center">Login</h1>

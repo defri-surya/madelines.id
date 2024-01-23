@@ -17,14 +17,14 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('no_hp');
-            $table->string('referal')->nullable();
+            $table->string('referal');
             $table->string('by_referal')->nullable();
             $table->string('referal_1')->nullable();
             $table->string('referal_2')->nullable();
             $table->string('referal_3')->nullable();
             $table->string('referal_4')->nullable();
-            $table->string('level')->nullable();
             $table->string('role');
+            $table->string('level')->nullable();
             $table->string('email')->unique();
             $table->text('alamat')->nullable();
             $table->string('foto')->nullable();
@@ -32,7 +32,6 @@ class CreateUsersTable extends Migration
             $table->string('atas_nama')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('deposit')->nullable();
             $table->string('saldo')->nullable();
             $table->enum('status_akun', ['Member', 'Calon Member', 'Admin']);
             $table->rememberToken();

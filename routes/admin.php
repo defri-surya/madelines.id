@@ -26,10 +26,6 @@ Route::middleware(['auth', 'Cekrole:admin', 'referral'])->group(function () {
     Route::get('withdraw-admin', [withdrawController::class, 'index']);
     Route::put('withdraw-konfirm/{ref}', [withdrawController::class, 'update']);
 
-    // Setting Profil
-    Route::get('setting-profil-admin/{ref}', [profilController::class, 'edit']);
-    Route::put('setting-update-admin/{ref}', [profilController::class, 'update']);
-
     // All Transaksi
     Route::get('transaksi', [TransaksiController::class, 'allTransaksi']);
 });

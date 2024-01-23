@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\User\anggotaController;
-use App\Http\Controllers\User\profilController;
 use App\Http\Controllers\User\saldoController;
 use App\Http\Controllers\User\TransaksiController;
 use App\Http\Controllers\User\withdrawController;
@@ -32,8 +31,4 @@ Route::middleware(['auth', 'Cekrole:member', 'referral'])->group(function () {
     // Withdraw
     Route::get('withdraw', [withdrawController::class, 'create']);
     Route::post('withdraw-store', [withdrawController::class, 'store']);
-
-    // Setting Profil
-    Route::get('setting-profil/{ref}', [profilController::class, 'edit']);
-    Route::put('setting-update/{ref}', [profilController::class, 'update']);
 });

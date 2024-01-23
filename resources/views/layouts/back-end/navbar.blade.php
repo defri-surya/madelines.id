@@ -5,8 +5,9 @@
 @endphp
 
 <!-- Navbar -->
-<header class="relative bg-white dark:bg-darker">
-    <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
+<header class="relative dark:bg-darker">
+    <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker"
+        style="background-color: #2D2929">
         <!-- Mobile menu button -->
         <button @click="isMobileMainMenuOpen = !isMobileMainMenuOpen"
             class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark md:hidden focus:outline-none focus:ring">
@@ -20,10 +21,9 @@
         </button>
 
         <!-- Brand -->
-        <a href="index.html"
-            class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
-            MadeLines.id
-        </a>
+        <div class="mx-auto custom-responsive-image">
+            <img src="{{ asset('assets/images/madeline-hr.png') }}" alt="">
+        </div>
 
         <!-- Mobile sub menu button -->
         <button @click="isMobileSubMenuOpen = !isMobileSubMenuOpen"
@@ -163,7 +163,7 @@
     </div>
     <!-- Mobile main manu -->
     <div class="border-b md:hidden dark:border-primary-darker" x-show="isMobileMainMenuOpen"
-        @click.away="isMobileMainMenuOpen = false">
+        style="background-color: #fff" @click.away="isMobileMainMenuOpen = false">
         <nav aria-label="Main" class="px-2 py-4 space-y-2">
             <!-- Dashboards links -->
             <div x-data="{ isActive: true, open: true }">
