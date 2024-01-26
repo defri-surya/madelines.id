@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Histori;
-use App\Models\Transaksi;
-use App\Models\User;
-use App\Models\Withdraw;
+use App\Models\InfoPerusahaan;
 use Illuminate\Http\Request;
 
-class saldoController extends Controller
+class infoPerusahaansController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +15,8 @@ class saldoController extends Controller
      */
     public function index()
     {
-        $saldo = User::where('id', auth()->user()->id)->first();
-        $transaksi = Histori::where('user_id', auth()->user()->id)->get();
-        $totalWD = Withdraw::where('user_id', auth()->user()->id)->where('status', 'Sukses')->sum('nominal');
-        $saldoEnd = $saldo->saldo - $totalWD;
-
-        return view('user.saldo.index', compact('saldoEnd', 'transaksi'));
+        $infoPerusahaan = InfoPerusahaan::first();
+        return view('user.infoPerusahaans.index', compact('infoPerusahaan'));
     }
 
     /**
@@ -33,8 +26,7 @@ class saldoController extends Controller
      */
     public function create()
     {
-        $transaksi = Histori::where('user_id', auth()->user()->id)->get();
-        return view('user.saldo.create', compact('transaksi'));
+        //
     }
 
     /**

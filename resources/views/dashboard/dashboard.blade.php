@@ -11,8 +11,232 @@
     <main>
         <!-- Content header -->
         <div class="flex items-center justify-between px-4 py-4 border-b lg:py-6 dark:border-primary-darker">
-            <h1 class="text-2xl font-semibold">Dashboard</h1>
+            <table class="table-auto">
+                <tbody>
+                    <tr>
+                        <td>
+                            <img class="w-20 h-20 rounded-full" src="{{ asset('assets') }}/images/users.png" alt="" />
+                        </td>
+                        <td>
+                            @can('isMember')
+                                {{ auth()->user()->referal }}
+                                <br>
+                                @if (auth()->user()->level === '1')
+                                    Level : Member
+                                @elseif (auth()->user()->level === '2')
+                                    Level : Mitra
+                                @elseif (auth()->user()->level === '3')
+                                    Level : Pionir
+                                @elseif (auth()->user()->level === '4')
+                                    Level : Network Manager
+                                @elseif (auth()->user()->level === '5')
+                                    Level : Senior Network Manager
+                                @elseif (auth()->user()->level === '6')
+                                    Level : Junior Director
+                                @elseif (auth()->user()->level === '7')
+                                    Level : Director
+                                @elseif (auth()->user()->level === '8')
+                                    Level : Senior Director
+                                @elseif (auth()->user()->level === '9')
+                                    Level : Presiden Director
+                                @elseif (auth()->user()->level === '10')
+                                    Level : Retirement
+                                @endif
+                            @endcan
+                            @can('isAdmin')
+                                {{ auth()->user()->name }}
+                            @endcan
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+        @can('isMember')
+            @if ($cekRegis)
+                <div class="items-center justify-between px-4 py-4 border-b lg:py-6 dark:border-primary-darker">
+                    <!-- Level 1 -->
+                    @if (auth()->user()->level === '1')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/5)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 5) * 100 }}%" aria-valuenow="{{ ($countReferal / 5) * 100 }}"
+                                aria-valuemin="0" aria-valuemax="{{ 100 }}">Mitra
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 2 -->
+                    @if (auth()->user()->level === '2')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/10)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 10) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 10) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Pionir
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 3 -->
+                    @if (auth()->user()->level === '3')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/15)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 15) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 15) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Pionir
+                            </div>
+                        </div>
+                        <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Beli produk apapun untuk klaim
+                                reward
+                                di level Pionir
+                                ({{ $transaksiCount }}/1)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 1) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 1) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Pionir
+                            </div>
+                        </div>
+
+                        @if (!$cekProfit)
+                            @if ($cektransaksi)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
+                    @endif
+
+                    <!-- Level 4 -->
+                    @if (auth()->user()->level === '4')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/20)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 20) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 20) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Network Manager
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 5 -->
+                    @if (auth()->user()->level === '5')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/25)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 25) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 25) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Senior Network Manager
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 6 -->
+                    @if (auth()->user()->level === '6')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/30)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 30) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 30) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Junior Director
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 7 -->
+                    @if (auth()->user()->level === '7')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/35)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 35) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 35) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Director
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 8 -->
+                    @if (auth()->user()->level === '8')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/40)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 40) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 40) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Senior Director
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 9 -->
+                    @if (auth()->user()->level === '9')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/45)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 45) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 45) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Presiden Director
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Level 10 -->
+                    @if (auth()->user()->level === '10')
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                                ({{ $countReferal }}/50)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($countReferal / 50) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 50) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">Retirement
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        @endcan
 
         <!-- Content -->
         <div class="mt-2">
@@ -26,6 +250,8 @@
                             <input
                                 class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
                                 type="hidden" name="nominal" value="75000" required autofocus />
+
+                            <input type="hidden" name="keterangan" value="Registrasi">
 
                             <div class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                                 <div>
@@ -76,42 +302,111 @@
                         </a>
                     @endif
 
-                    <!-- Orders card -->
-                    <a href="javascript:void(0);" onclick="copyLink()"
+                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div>
+                            <h6
+                                class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                Point Grup
+                            </h6>
+                            <span class="text-xl font-semibold">Rp 0</span>
+                        </div>
+                        <div>
+                            <span>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 11 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M1.75 15.363a4.954 4.954 0 0 0 2.638 1.574c2.345.572 4.653-.434 5.155-2.247.502-1.813-1.313-3.79-3.657-4.364-2.344-.574-4.16-2.551-3.658-4.364.502-1.813 2.81-2.818 5.155-2.246A4.97 4.97 0 0 1 10 5.264M6 17.097v1.82m0-17.5v2.138" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div>
+                            <h6
+                                class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                Sharing Profit
+                            </h6>
+                            <span class="text-xl font-semibold">Rp 0</span>
+                        </div>
+                        <div>
+                            <span>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 11 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M1.75 15.363a4.954 4.954 0 0 0 2.638 1.574c2.345.572 4.653-.434 5.155-2.247.502-1.813-1.313-3.79-3.657-4.364-2.344-.574-4.16-2.551-3.658-4.364.502-1.813 2.81-2.818 5.155-2.246A4.97 4.97 0 0 1 10 5.264M6 17.097v1.82m0-17.5v2.138" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="{{ url('anggota?ref=' . request('ref')) }}"
                         class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                         <div>
                             <h6
                                 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                Share
+                                Jaringan Anda
+                            </h6>
+                        </div>
+                        <div>
+                            <span aria-hidden="true">
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="{{ url('withdraw?ref=' . request('ref')) }}"
+                        class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div>
+                            <h6
+                                class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                Withdraw
                             </h6>
                         </div>
                         <div>
                             <span>
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="m5.953 7.467 6.094-2.612m.096 8.114L5.857 9.676m.305-1.192a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0ZM17 3.84a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0Zm0 10.322a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0Z" />
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 11 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M1.75 15.363a4.954 4.954 0 0 0 2.638 1.574c2.345.572 4.653-.434 5.155-2.247.502-1.813-1.313-3.79-3.657-4.364-2.344-.574-4.16-2.551-3.658-4.364.502-1.813 2.81-2.818 5.155-2.246A4.97 4.97 0 0 1 10 5.264M6 17.097v1.82m0-17.5v2.138" />
                                 </svg>
                             </span>
                         </div>
                     </a>
+
+                    <!-- Orders card -->
+                    <a href="javascript:void(0);" onclick="copyLink()"
+                        class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div class="flex items-center space-x-2">
+                            <div
+                                class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                <input
+                                    class="w-80 px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
+                                    type="text" value="http://localhost:8000/register?ref={{ auth()->user()->referal }}"
+                                    disabled />
+                            </div>
+                            <div>
+                                <span>
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="m5.953 7.467 6.094-2.612m.096 8.114L5.857 9.676m.305-1.192a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0ZM17 3.84a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0Zm0 10.322a2.581 2.581 0 1 1-5.162 0 2.581 2.581 0 0 1 5.162 0Z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
                     <input type="text" value="{{ 'http://localhost:8000/register?ref=' . request('ref') }}"
                         id="shareLinkInput" style="display: none;">
-                </div>
-
-                <!-- Charts -->
-                <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-12">
-                    <!-- Bar chart card -->
-                    <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-                        <!-- Card header -->
-                        <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                            <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Market Plan</h4>
-                        </div>
-                        <!-- Chart -->
-                        <div class="relative p-4 h-72">
-                            <h3>Market Plan</h3>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-12">
@@ -126,94 +421,42 @@
 
                 <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-3">
                     <!-- Active users chart -->
-                    <div class="col-span-1 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <!-- Content -->
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
+                    @forelse ($produk as $item)
+                        <div class="col-span-4 bg-white rounded-md dark:bg-darker"
+                            style="background-image: url('{{ asset($item->foto) }}'); background-size: cover; background-position: center;">
+                            <!-- Content -->
+                            <div class="relative p-4 h-72">
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
+                                    <div class="absolute" style="bottom: 0">
+                                        <p class="text-xl text-white text-center font-bold">
+                                            {{ $item->title }}
+                                        </p>
+                                        <p class="text-lg text-white text-center">Harga: Rp {{ number_format($item->harga) }}
+                                        </p>
+                                        <form method="POST" action="{{ url('beli-produk-store?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="nominal" value="{{ $item->harga }}">
+                                            <input type="hidden" name="keterangan" value="Beli Produk">
+                                            <input type="hidden" name="produk_id" value="{{ $item->id }}">
+                                            <button type="submit"
+                                                class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
+                                                Beli Sekarang &#10150;
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Line chart card -->
-                    <div class="col-span-4 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <!-- Card header -->
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
-                                </div>
+                    @empty
+                        <div class="col-span-4 bg-white rounded-md dark:bg-darker">
+                            <!-- Content -->
+                            <div class="relative p-4 h-72">
+                                <p>
+                                    Belum ada Produk !
+                                </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-span-4 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-4 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-4 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-4 bg-white rounded-md dark:bg-darker"
-                        style="background-image: url('{{ asset('assets/back-end/images/cover.jpg') }}'); background-size: cover; background-position: center;">
-                        <div class="relative p-4 h-72">
-                            <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative">
-                                <h2 class="text-2xl font-bold text-white text-center">Nama Produk</h2>
-                                <div class="absolute" style="bottom: 0">
-                                    <p class="text-lg text-white text-center">Harga: Rp 100.000</p>
-                                    <button class="bg-blue-500 border border-blue-700 text-white px-4 py-2 rounded-md">
-                                        Beli Sekarang &#10150;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             @endcan
 
@@ -227,6 +470,26 @@
                                 Member
                             </h6>
                             <span class="text-xl font-semibold">{{ $allUser }}</span>
+                        </div>
+                        <div>
+                            <span>
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M4.333 6.764a3 3 0 1 1 3.141-5.023M2.5 16H1v-2a4 4 0 0 1 4-4m7.379-8.121a3 3 0 1 1 2.976 5M15 10a4 4 0 0 1 4 4v2h-1.761M13 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-4 6h2a4 4 0 0 1 4 4v2H5v-2a4 4 0 0 1 4-4Z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                        <div>
+                            <h6
+                                class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                Calon Member
+                            </h6>
+                            <span class="text-xl font-semibold">{{ $allCalonUser }}</span>
                         </div>
                         <div>
                             <span>

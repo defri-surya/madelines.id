@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\InfoPerusahaan;
 use Illuminate\Http\Request;
 
-class profilController extends Controller
+class infoPerusahaanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,8 @@ class profilController extends Controller
      */
     public function index()
     {
-        //
+        $info = InfoPerusahaan::first();
+        return view('admin.infoPerusahaan.edit', compact('info'));
     }
 
     /**
@@ -25,7 +26,7 @@ class profilController extends Controller
      */
     public function create()
     {
-        // 
+        //
     }
 
     /**
@@ -58,8 +59,7 @@ class profilController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('referal', $id)->first();
-        return view('user.profil.create', compact('user'));
+        //
     }
 
     /**
@@ -71,18 +71,17 @@ class profilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($id);
         $request->validate([
             'foto' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1000',
         ]);
 
-        $data = User::findOrFail($id);
+        $data = InfoPerusahaan::findOrFail($id);
 
         if ($request->hasFile('foto')) {
             //upload new image
             $image = $request->file('foto');
-            $new_foto = time() . 'fotoprofil' . $image->getClientOriginalName();
-            $tujuan_uploud = 'upload/fotoprofil/';
+            $new_foto = time() . 'fotoperusahaan' . $image->getClientOriginalName();
+            $tujuan_uploud = 'upload/fotoperusahaan/';
             $image->move($tujuan_uploud, $new_foto);
 
             //delete old image in local
@@ -92,25 +91,28 @@ class profilController extends Controller
 
             //Update With New Image 
             $data->update([
-                'foto'          => $tujuan_uploud . $new_foto,
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
+                'foto'      => $tujuan_uploud . $new_foto,
+                'nama'      => $request->nama,
+                'alamat'    => $request->alamat,
+                'cp'        => $request->cp,
+                'no_cs_1'   => $request->no_cs_1,
+                'no_cs_2'   => $request->no_cs_2,
+                'no_cs_3'   => $request->no_cs_3,
             ]);
         } else {
-            // update without new image 
+            // update with new image 
             $data->update([
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
+                'nama'      => $request->nama,
+                'alamat'    => $request->alamat,
+                'alamat'    => $request->alamat,
+                'cp'        => $request->cp,
+                'no_cs_1'   => $request->no_cs_1,
+                'no_cs_2'   => $request->no_cs_2,
+                'no_cs_3'   => $request->no_cs_3,
             ]);
         }
 
-        return back();
+        return redirect()->back();
     }
 
     /**

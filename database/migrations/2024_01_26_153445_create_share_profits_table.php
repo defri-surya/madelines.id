@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistorisTable extends Migration
+class CreateShareProfitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateHistorisTable extends Migration
      */
     public function up()
     {
-        Schema::create('historis', function (Blueprint $table) {
+        Schema::create('share_profits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('produk_id')->nullable();
-            $table->string('income')->nullable();
-            $table->string('expenditure')->nullable();
-            $table->date('tgl');
-            $table->string('keterangan');
-            $table->enum('status', ['Proses', 'Sukses', 'Gagal']);
+            $table->string('persentase');
+            $table->string('nominal')->nullable();
+            $table->enum('status', ['Sukses', 'Gagal']);
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateHistorisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historis');
+        Schema::dropIfExists('share_profits');
     }
 }

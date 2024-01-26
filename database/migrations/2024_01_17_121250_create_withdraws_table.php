@@ -20,6 +20,7 @@ class CreateWithdrawsTable extends Migration
             $table->string('no_rekening');
             $table->string('atas_nama');
             $table->string('nominal');
+            $table->string('bank');
             $table->date('tgl_wd');
             $table->enum('status', ['Proses', 'Sukses', 'Gagal']);
             $table->timestamps();

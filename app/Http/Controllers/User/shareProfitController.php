@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Histori;
-use App\Models\Transaksi;
+use App\Models\ShareProfit;
 use App\Models\User;
-use App\Models\Withdraw;
 use Illuminate\Http\Request;
 
-class saldoController extends Controller
+class shareProfitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +16,7 @@ class saldoController extends Controller
      */
     public function index()
     {
-        $saldo = User::where('id', auth()->user()->id)->first();
-        $transaksi = Histori::where('user_id', auth()->user()->id)->get();
-        $totalWD = Withdraw::where('user_id', auth()->user()->id)->where('status', 'Sukses')->sum('nominal');
-        $saldoEnd = $saldo->saldo - $totalWD;
-
-        return view('user.saldo.index', compact('saldoEnd', 'transaksi'));
+        //
     }
 
     /**
@@ -33,8 +26,7 @@ class saldoController extends Controller
      */
     public function create()
     {
-        $transaksi = Histori::where('user_id', auth()->user()->id)->get();
-        return view('user.saldo.create', compact('transaksi'));
+        //
     }
 
     /**
@@ -45,7 +37,17 @@ class saldoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['persentase'] = '2';
+        $data['status'] = 'Sukses';
+        ShareProfit::create($data);
+
+        // $user = User::where('id', $data['user_id'])->first();
+        // $user->update([
+        //     'level' => '4',
+        // ]);
+
+        return redirect()->back();
     }
 
     /**

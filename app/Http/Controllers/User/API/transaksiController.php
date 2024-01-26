@@ -50,7 +50,7 @@ class transaksiController extends Controller
                     ]);
 
                     // Memberikan bonus ke 5 tingkat user yang berhubungan
-                    $bonusNominals = [10000, 4000, 2000, 1000, 1000]; // Bonus nominal untuk masing-masing tingkat
+                    $bonusNominals = [10000, 3000, 2000, 1000, 1000]; // Bonus nominal untuk masing-masing tingkat
 
                     // Mendapatkan referal_1 hingga referal_5 dari tabel
                     $referals = [

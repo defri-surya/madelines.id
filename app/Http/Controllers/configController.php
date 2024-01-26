@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Histori;
+use App\Models\Produk;
+use App\Models\ShareProfit;
 use App\Models\User;
 use App\Models\Withdraw;
 use Illuminate\Http\Request;
@@ -40,7 +43,34 @@ class configController extends Controller
             ->count();
 
         $allUser = User::where('status_akun', 'Member')->count();
+        $allCalonUser = User::where('status_akun', 'Calon Member')->count();
+        $produk = Produk::all();
 
-        return view('dashboard.dashboard', compact('saldoEnd', 'userCount', 'saldo', 'allUser'));
+        // Setup Progress Bar
+        // Count by_referal
+        $countReferal = User::where('by_referal', auth()->user()->referal)
+            ->where('status_akun', 'Member')
+            ->count();
+
+        $cektransaksi = Histori::where('user_id', auth()->user()->id)
+            ->where('status', 'Sukses')
+            ->where('keterangan', 'Beli Produk')
+            ->exists();
+
+        $transaksiCount = Histori::where('user_id', auth()->user()->id)
+            ->where('status', 'Sukses')
+            ->where('keterangan', 'Beli Produk')
+            ->count();
+
+        $cekRegis = Histori::where('user_id', auth()->user()->id)
+            ->where('keterangan', 'Registrasi')
+            ->where('status', 'Sukses')
+            ->exists();
+
+        $cekProfit = ShareProfit::where('user_id', auth()->user()->id)
+            ->where('status', 'Sukses')
+            ->exists();
+
+        return view('dashboard.dashboard', compact('saldoEnd', 'userCount', 'saldo', 'allUser', 'allCalonUser', 'produk', 'countReferal', 'cektransaksi', 'transaksiCount', 'cekRegis', 'cekProfit'));
     }
 }

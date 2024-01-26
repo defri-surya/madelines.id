@@ -77,9 +77,67 @@ class TransaksiController extends Controller
 
         $histori = new Histori;
         $histori->user_id = $data['user_id'];
+        $histori->kode_pay = $kode_payment;
         $histori->income = $data['nominal'];
         $histori->tgl = $data['tgl_payment'];
-        $histori->keterangan = 'Deposit';
+        $histori->keterangan = $data['keterangan'];
+        $histori->status = $data['status_payment'];
+        $histori->save();
+
+        // Start Cookie For Payment
+        $user = User::where('id', $transaksi->user_id)->first();
+        $payment = json_decode(request()->cookie('payment'), true);
+        $payment = [
+            'order_code' => $transaksi->kode_payment,
+            'nominal' => $transaksi->nominal,
+            'nama' => $user->name,
+            'email' => $user->email,
+            // 'no_hp' => $user->no_hp,
+        ];
+
+        $cookie = cookie('payment', json_encode($payment), 2880);
+        return redirect()->route('payment')->cookie($cookie);
+    }
+
+    public function beliProduk(Request $request)
+    {
+        $data = $request->all();
+        $usedNumbers = Transaksi::pluck('kode_payment')->toArray();
+
+        // Mendefinisikan batas atas percobaan pengambilan nomor acak
+        $maxAttempts = 10;
+
+        // Menginisialisasi variabel
+        $randomNumber = null;
+
+        // Melakukan percobaan maksimum
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            // Menghasilkan nomor acak
+            $randomNumber = str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+
+            // Memeriksa apakah nomor acak sudah digunakan
+            if (!in_array($randomNumber, $usedNumbers)) {
+                // Jika belum digunakan, keluar dari loop
+                break;
+            }
+
+            // Jika sudah digunakan, coba lagi hingga mencapai batas maksimum
+        }
+        $kode_payment = 'DEP' . date('Y') . $randomNumber;
+        $data['kode_payment'] = $kode_payment;
+        $data['tgl_payment'] = date('Y-m-d');
+        $data['user_id'] = auth()->user()->id;
+        $data['status_payment'] = 'Proses';
+
+        $transaksi = Transaksi::create($data);
+
+        $histori = new Histori;
+        $histori->user_id = $data['user_id'];
+        $histori->produk_id = $data['produk_id'];
+        $histori->kode_pay = $kode_payment;
+        $histori->expenditure = $data['nominal'];
+        $histori->tgl = $data['tgl_payment'];
+        $histori->keterangan = $data['keterangan'];
         $histori->status = $data['status_payment'];
         $histori->save();
 

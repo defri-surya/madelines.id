@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\MarketingPlan;
 use Illuminate\Http\Request;
 
-class profilController extends Controller
+class marketingPlanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,8 @@ class profilController extends Controller
      */
     public function index()
     {
-        //
+        $marketplan = MarketingPlan::all();
+        return view('admin.marketingPlan.index', compact('marketplan'));
     }
 
     /**
@@ -25,7 +26,7 @@ class profilController extends Controller
      */
     public function create()
     {
-        // 
+        return view('admin.marketingPlan.create');
     }
 
     /**
@@ -36,7 +37,22 @@ class profilController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'foto' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1000',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->has('foto')) {
+            $foto = $request->foto;
+            $new_foto = time() . 'fotomarketplan' . $foto->getClientOriginalName();
+            $tujuan_uploud = 'upload/fotomarketplan/';
+            $foto->move($tujuan_uploud, $new_foto);
+            $data['foto'] = $tujuan_uploud . $new_foto;
+        }
+
+        MarketingPlan::create($data);
+        return redirect('/marketplan?ref=' . auth()->user()->referal);
     }
 
     /**
@@ -58,8 +74,8 @@ class profilController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('referal', $id)->first();
-        return view('user.profil.create', compact('user'));
+        $marketplan = MarketingPlan::where('id', $id)->first();
+        return view('admin.marketingPlan.edit', compact('marketplan'));
     }
 
     /**
@@ -71,18 +87,17 @@ class profilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($id);
         $request->validate([
             'foto' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1000',
         ]);
 
-        $data = User::findOrFail($id);
+        $data = MarketingPlan::findOrFail($id);
 
         if ($request->hasFile('foto')) {
             //upload new image
             $image = $request->file('foto');
-            $new_foto = time() . 'fotoprofil' . $image->getClientOriginalName();
-            $tujuan_uploud = 'upload/fotoprofil/';
+            $new_foto = time() . 'fotomarketplan' . $image->getClientOriginalName();
+            $tujuan_uploud = 'upload/fotomarketplan/';
             $image->move($tujuan_uploud, $new_foto);
 
             //delete old image in local
@@ -92,25 +107,10 @@ class profilController extends Controller
 
             //Update With New Image 
             $data->update([
-                'foto'          => $tujuan_uploud . $new_foto,
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
-            ]);
-        } else {
-            // update without new image 
-            $data->update([
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
+                'foto'  => $tujuan_uploud . $new_foto,
             ]);
         }
-
-        return back();
+        return redirect('/marketplan?ref=' . auth()->user()->referal);
     }
 
     /**
@@ -121,6 +121,7 @@ class profilController extends Controller
      */
     public function destroy($id)
     {
-        //
+        MarketingPlan::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }

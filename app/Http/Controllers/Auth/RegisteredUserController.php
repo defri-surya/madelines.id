@@ -43,11 +43,8 @@ class RegisteredUserController extends Controller
         $referralCodeFromURL = $request->query('ref');
         $byReferal = !empty($referralCodeFromURL) ? $referralCodeFromURL : null;
 
-        $byReferalCount = User::where('by_referal', $byReferal)->count();
-
         $referalChain = [$byReferal];
 
-        // Function to fetch referal chain based on given referal
         $fetchReferalChain = function ($byReferal) use (&$referalChain, &$fetchReferalChain) {
             if ($byReferal) {
                 $referralUser = User::where('referal', $byReferal)->first();
@@ -59,11 +56,7 @@ class RegisteredUserController extends Controller
             }
         };
 
-        // Fetch referal chain for the initial by_referal
         $fetchReferalChain($byReferal);
-
-        // Check if the current by_referal code has reached the limit (5 users)
-        $byReferalCount = User::where('by_referal', $byReferal)->count();
 
         $referralRules = User::select('by_referal', 'referal')
             ->whereNotNull('referal')
@@ -71,28 +64,20 @@ class RegisteredUserController extends Controller
             ->get()
             ->pluck('by_referal', 'referal')
             ->toArray();
-        // dd($referralRules);
 
         $childReferals = collect($referralRules)->filter(function ($byReferalValue, $referalKey) use ($byReferal) {
             return $byReferalValue === $byReferal;
         })->keys()->toArray();
 
-        if ($byReferalCount >= 5 && !empty($childReferals)) {
-            foreach ($childReferals as $childReferal) {
-                // Check if the current child referal has not reached the limit
-                $childReferalCount = User::where('by_referal', $childReferal)->count();
-                if ($childReferalCount < 5) {
-                    // Set the new by_referal
-                    $byReferal = $childReferal;
-                    // dd($byReferal);
+        shuffle($childReferals);
 
-                    // Reset referal chain and fetch it again
-                    $referalChain = [$byReferal];
-                    $fetchReferalChain($byReferal);
+        foreach ($childReferals as $childReferal) {
+            $childReferalCount = User::where('by_referal', $childReferal)->count();
+            if ($childReferalCount < 5) {
+                $byReferal = $childReferal;
 
-                    // Exit the loop
-                    break;
-                }
+                $referalChain = [$byReferal];
+                $fetchReferalChain($byReferal);
             }
         }
 

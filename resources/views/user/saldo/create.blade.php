@@ -33,6 +33,9 @@
                                 class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
                                 type="number" name="nominal" placeholder="Minimal deposit Rp 50.000" min="50000"
                                 required autofocus />
+
+                            <input type="hidden" name="keterangan" value="Deposit">
+
                             <div>
                                 <button type="submit"
                                     class="w-full px-4 py-2 font-medium text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
@@ -57,23 +60,32 @@
                             <tbody>
                                 @forelse ($transaksi as $item)
                                     <tr>
-                                        <td>+ Rp {{ number_format($item->nominal) }}</td>
-                                        <td>{{ Carbon\Carbon::parse($item->tgl_payment)->format('d-m-Y') }}</td>
+                                        <td>{{ $item->kode_pay }}</td>
                                         <td>
-                                            @if ($item->status_payment === 'Proses')
+                                            @if ($item->income != null)
+                                                Rp {{ number_format($item->income) }}
+                                            @endif
+                                            @if ($item->expenditure != null)
+                                                Rp {{ number_format($item->expenditure) }}
+                                            @endif
+                                        </td>
+                                        <td>{{ Carbon\Carbon::parse($item->tgl)->format('d-m-Y') }}</td>
+                                        <td>{{ $item->keterangan }}</td>
+                                        <td>
+                                            @if ($item->status === 'Proses')
                                                 <span
                                                     class="inline-block px-2 py-px ml-2 text-md text-orange-500 bg-orange-100 rounded-md">
-                                                    {{ $item->status_payment }}
+                                                    {{ $item->status }}
                                                 </span>
-                                            @elseif ($item->status_payment === 'Sukses')
+                                            @elseif ($item->status === 'Sukses')
                                                 <span
                                                     class="inline-block px-2 py-px ml-2 text-md text-green-500 bg-green-100 rounded-md">
-                                                    + {{ $item->status_payment }}
+                                                    + {{ $item->status }}
                                                 </span>
                                             @else
                                                 <span
                                                     class="inline-block px-2 py-px ml-2 text-md text-red-500 bg-red-100 rounded-md">
-                                                    {{ $item->status_payment }}
+                                                    {{ $item->status }}
                                                 </span>
                                             @endif
                                         </td>

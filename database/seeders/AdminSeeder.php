@@ -37,5 +37,17 @@ class AdminSeeder extends Seeder
                 'status_akun' => 'Member',
             ]
         ]);
+
+        DB::table('info_perusahaans')->insert([
+            [
+                'foto' => null,
+                'nama' => 'MadeLines.id',
+                'alamat' => 'Bantul',
+                'cp' => '11223344',
+                'no_cs_1' => '11223344',
+                'no_cs_2' => '11223344',
+                'no_cs_3' => '11223344',
+            ]
+        ]);
     }
 }

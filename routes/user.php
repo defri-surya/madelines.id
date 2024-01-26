@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\User\anggotaController;
+use App\Http\Controllers\User\infoPerusahaansController;
+use App\Http\Controllers\User\marketingPlansController;
 use App\Http\Controllers\User\saldoController;
+use App\Http\Controllers\User\shareProfitController;
 use App\Http\Controllers\User\TransaksiController;
 use App\Http\Controllers\User\withdrawController;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +34,16 @@ Route::middleware(['auth', 'Cekrole:member', 'referral'])->group(function () {
     // Withdraw
     Route::get('withdraw', [withdrawController::class, 'create']);
     Route::post('withdraw-store', [withdrawController::class, 'store']);
+
+    // Marketing Plan
+    Route::get('marketing-plan', [marketingPlansController::class, 'index']);
+
+    // Info Perusahaan
+    Route::get('info-perusahaan', [infoPerusahaansController::class, 'index']);
+
+    // Beli Produk
+    Route::post('beli-produk-store', [TransaksiController::class, 'beliProduk']);
+
+    // Klaim Reward Share Profit
+    Route::post('profit-klaim', [shareProfitController::class, 'store']);
 });

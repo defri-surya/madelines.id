@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
-class profilController extends Controller
+class produkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,8 @@ class profilController extends Controller
      */
     public function index()
     {
-        //
+        $produk = Produk::all();
+        return view('admin.produk.index', compact('produk'));
     }
 
     /**
@@ -25,7 +26,7 @@ class profilController extends Controller
      */
     public function create()
     {
-        // 
+        return view('admin.produk.create');
     }
 
     /**
@@ -36,7 +37,22 @@ class profilController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'foto' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1000',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->has('foto')) {
+            $foto = $request->foto;
+            $new_foto = time() . 'fotoproduk' . $foto->getClientOriginalName();
+            $tujuan_uploud = 'upload/fotoproduk/';
+            $foto->move($tujuan_uploud, $new_foto);
+            $data['foto'] = $tujuan_uploud . $new_foto;
+        }
+
+        Produk::create($data);
+        return redirect('/produk?ref=' . auth()->user()->referal);
     }
 
     /**
@@ -58,8 +74,8 @@ class profilController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('referal', $id)->first();
-        return view('user.profil.create', compact('user'));
+        $produk = Produk::where('id', $id)->first();
+        return view('admin.produk.edit', compact('produk'));
     }
 
     /**
@@ -71,18 +87,17 @@ class profilController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($id);
         $request->validate([
             'foto' => 'image|mimes:jpg,png,jpeg,gif,svg|max:1000',
         ]);
 
-        $data = User::findOrFail($id);
+        $data = Produk::findOrFail($id);
 
         if ($request->hasFile('foto')) {
             //upload new image
             $image = $request->file('foto');
-            $new_foto = time() . 'fotoprofil' . $image->getClientOriginalName();
-            $tujuan_uploud = 'upload/fotoprofil/';
+            $new_foto = time() . 'fotoproduk' . $image->getClientOriginalName();
+            $tujuan_uploud = 'upload/fotoproduk/';
             $image->move($tujuan_uploud, $new_foto);
 
             //delete old image in local
@@ -92,25 +107,19 @@ class profilController extends Controller
 
             //Update With New Image 
             $data->update([
-                'foto'          => $tujuan_uploud . $new_foto,
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
+                'foto'       => $tujuan_uploud . $new_foto,
+                'title'      => $request->title,
+                'harga'      => $request->harga,
             ]);
         } else {
-            // update without new image 
+            // update with new image 
             $data->update([
-                'name'          => $request->name,
-                'no_hp'         => $request->no_hp,
-                'no_rekening'   => $request->no_rekening,
-                'atas_nama'     => $request->atas_nama,
-                'alamat'        => $request->alamat,
+                'title'      => $request->title,
+                'harga'      => $request->harga,
             ]);
         }
 
-        return back();
+        return redirect('/produk?ref=' . auth()->user()->referal);
     }
 
     /**
@@ -121,6 +130,7 @@ class profilController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Produk::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }
