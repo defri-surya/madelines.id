@@ -549,6 +549,28 @@
             }
         }
     </script>
+
+    <script>
+        window.addEventListener('beforeunload', function(e) {
+            // Kirim permintaan POST saat tab ditutup
+            fetch('/logout-on-close', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Jangan lupa untuk menyertakan CSRF token
+                },
+                body: JSON.stringify({
+                    // Data tambahan yang mungkin diperlukan
+                }),
+            });
+
+            // Beberapa browser memerlukan pesan khusus
+            var confirmationMessage = 'Are you sure you want to leave?';
+            (e || window.event).returnValue = confirmationMessage;
+            return confirmationMessage;
+        });
+    </script>
+
     @stack('js')
 </body>
 

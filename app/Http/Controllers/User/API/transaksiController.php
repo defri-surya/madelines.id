@@ -64,7 +64,9 @@ class transaksiController extends Controller
                     foreach ($referals as $index => $referal) {
                         if ($referal) {
                             // Temukan pengguna berdasarkan referal
-                            $referralUser = User::where('referal', $referal)->first();
+                            $referralUser = User::where('referal', $referal)
+                                ->where('status_akun', 'Member')
+                                ->first();
 
                             // Update saldo untuk pengguna yang merujuk
                             if ($referralUser) {
