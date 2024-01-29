@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\anggotaController;
 use App\Http\Controllers\User\infoPerusahaansController;
 use App\Http\Controllers\User\marketingPlansController;
+use App\Http\Controllers\User\poinController;
 use App\Http\Controllers\User\saldoController;
 use App\Http\Controllers\User\shareProfitController;
 use App\Http\Controllers\User\TransaksiController;
@@ -46,4 +47,17 @@ Route::middleware(['auth', 'Cekrole:member', 'referral'])->group(function () {
 
     // Klaim Reward Share Profit
     Route::post('profit-klaim', [shareProfitController::class, 'store']);
+    Route::post('profit-klaim-nm', [shareProfitController::class, 'storeNM']);
+    Route::post('profit-klaim-snm', [shareProfitController::class, 'storeSNM']);
+    Route::post('profit-klaim-jd', [shareProfitController::class, 'storeJD']);
+    Route::post('profit-klaim-director', [shareProfitController::class, 'storeDirector']);
+    Route::post('profit-klaim-sd', [shareProfitController::class, 'storeSD']);
+    Route::post('profit-klaim-pd', [shareProfitController::class, 'storePD']);
+    Route::post('profit-klaim-retirement', [shareProfitController::class, 'storeRetirement']);
+
+    // Share Profit
+    Route::get('share-profit', [shareProfitController::class, 'index']);
+
+    // Poin
+    Route::get('poin', [poinController::class, 'index']);
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Histori;
+use App\Models\ShareProfit;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,9 +42,15 @@ class transaksiController extends Controller
                 ]);
 
                 $user = User::where('id', $value->user_id)->first();
+
+                $profit = new ShareProfit;
+                $profit->user_id = $user->id;
+                $profit->profit_persen_member = '5';
+                $profit->save();
+
                 if ($user->saldo === null) {
                     // Jika saldo null, gunakan nilai 10000
-                    $newSaldo = $user->saldo + 10000;
+                    $newSaldo = $user->saldo + 7500;
                     $user->update([
                         'status_akun' => 'Member',
                         'saldo' => $newSaldo,

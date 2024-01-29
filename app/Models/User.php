@@ -34,6 +34,7 @@ class User extends Authenticatable
         'no_rekening',
         'atas_nama',
         'password',
+        'poin',
         'saldo',
         'status_akun',
     ];

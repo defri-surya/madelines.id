@@ -17,24 +17,14 @@ class AdminSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Admin',
-                'email' => 'madelines@gmail.com',
-                'role' => 'admin',
-                'password' => bcrypt('password'),
-                'no_hp' => '11223344',
-                'referal' => '20240119',
-                'by_referal' => '20240119',
-                'status_akun' => 'Admin',
-            ],
-            [
                 'name' => 'Perusahaan',
                 'email' => 'madelines.id@gmail.com',
-                'role' => 'member',
+                'role' => 'admin',
                 'password' => bcrypt('password'),
                 'no_hp' => '0811223344',
                 'referal' => '202400002',
                 'by_referal' => '202400001',
-                'status_akun' => 'Member',
+                'status_akun' => 'Admin',
             ]
         ]);
 

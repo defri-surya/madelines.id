@@ -16,7 +16,8 @@ class shareProfitController extends Controller
      */
     public function index()
     {
-        //
+        alert()->warning('Maaf', 'Halaman Sedang Dalam Pengembangan !');
+        return redirect()->back();
     }
 
     /**
@@ -38,14 +39,87 @@ class shareProfitController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['persentase'] = '2';
-        $data['status'] = 'Sukses';
-        ShareProfit::create($data);
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_pionir' => '2'
+        ]);
 
-        // $user = User::where('id', $data['user_id'])->first();
-        // $user->update([
-        //     'level' => '4',
-        // ]);
+        return redirect()->back();
+    }
+
+    public function storeNM(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_nm' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeSNM(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_snm' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeJD(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_jd' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeDirector(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_director' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeSD(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_sd' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storePD(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_pd' => '1'
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeRetirement(Request $request)
+    {
+        $data = $request->all();
+        $profit = ShareProfit::where('user_id', $data['user_id'])->first();
+        $profit->update([
+            'profit_persen_retirement' => '1'
+        ]);
 
         return redirect()->back();
     }

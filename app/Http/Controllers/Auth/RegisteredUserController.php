@@ -58,6 +58,8 @@ class RegisteredUserController extends Controller
 
         $fetchReferalChain($byReferal);
 
+        $byReferalCount = User::where('by_referal', $byReferal)->count();
+
         $referralRules = User::select('by_referal', 'referal')
             ->whereNotNull('referal')
             ->whereNotNull('by_referal')
@@ -71,13 +73,19 @@ class RegisteredUserController extends Controller
 
         shuffle($childReferals);
 
-        foreach ($childReferals as $childReferal) {
-            $childReferalCount = User::where('by_referal', $childReferal)->count();
-            if ($childReferalCount < 5) {
-                $byReferal = $childReferal;
+        $uniqueChildReferals = array_values(array_unique($childReferals));
 
-                $referalChain = [$byReferal];
-                $fetchReferalChain($byReferal);
+        if ($byReferalCount >= 5 && !empty($childReferals)) {
+            foreach ($uniqueChildReferals as $childReferal) {
+                $childReferalCount = User::where('by_referal', $childReferal)->count();
+                if ($childReferalCount < 5) {
+                    $byReferal = $childReferal;
+
+                    $referalChain = [$byReferal];
+                    $fetchReferalChain($byReferal);
+
+                    break;
+                }
             }
         }
 

@@ -7,6 +7,8 @@
 @endsection
 
 @section('content')
+    @include('sweetalert::alert')
+
     <!-- Main content -->
     <main>
         <!-- Content header -->
@@ -54,17 +56,19 @@
 
         @can('isMember')
             @if ($cekRegis)
+                {{-- {{ dd($countReferal) }} --}}
                 <div class="items-center justify-between px-4 py-4 border-b lg:py-6 dark:border-primary-darker">
                     <!-- Level 1 -->
                     @if (auth()->user()->level === '1')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Mitra</strong>
                                 ({{ $countReferal }}/5)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
                                 style="width: {{ ($countReferal / 5) * 100 }}%" aria-valuenow="{{ ($countReferal / 5) * 100 }}"
-                                aria-valuemin="0" aria-valuemax="{{ 100 }}">Mitra
+                                aria-valuemin="0" aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
                     @endif
@@ -72,14 +76,15 @@
                     <!-- Level 2 -->
                     @if (auth()->user()->level === '2')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/10)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Pionir</strong>
+                                ({{ $countReferal }}/25)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 10) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 10) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Pionir
+                                style="width: {{ ($countReferal / 25) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 25) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
                     @endif
@@ -87,39 +92,40 @@
                     <!-- Level 3 -->
                     @if (auth()->user()->level === '3')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/15)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Network Manager</strong>
+                                ({{ $countReferal }}/125)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 15) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 15) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Pionir
+                                style="width: {{ ($countReferal / 125) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 125) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
-                        <br>
+
+                        {{-- <br>
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Beli produk apapun untuk klaim
-                                reward
-                                di level Pionir
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
                                 ({{ $transaksiCount }}/1)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
                                 style="width: {{ ($transaksiCount / 1) * 100 }}%"
                                 aria-valuenow="{{ ($transaksiCount / 1) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Pionir
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
                             </div>
                         </div>
 
-                        @if (!$cekProfit)
+                        @if (!$cekProfitNM)
                             @if ($cektransaksi)
                                 <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
                                     <div class="absolute">
-                                        <form method="POST" action="{{ url('profit-klaim?ref=' . request('ref')) }}">
+                                        <form method="POST" action="{{ url('profit-klaim-nm?ref=' . request('ref')) }}">
                                             @csrf
                                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                            <button type="submit"
+                                            <button type="submit" onclick="disableButton()"
                                                 class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
                                                 Klaim
                                             </button>
@@ -127,112 +133,290 @@
                                     </div>
                                 </div>
                             @endif
-                        @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 4 -->
                     @if (auth()->user()->level === '4')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/20)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Senior Network Manager</strong>
+                                ({{ $countReferal }}/625)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 20) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 20) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Network Manager
+                                style="width: {{ ($countReferal / 625) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 625) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
+
+                        {{-- <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/3)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 3) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 3) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
+                            </div>
+                        </div>
+
+                        @if (!$cekProfitSNM)
+                            @if ($transaksiCount >= 3)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim-snm?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 5 -->
                     @if (auth()->user()->level === '5')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/25)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Junior Director</strong>
+                                ({{ $countReferal }}/3125)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 25) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 25) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Senior Network Manager
+                                style="width: {{ ($countReferal / 3125) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 3125) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
+
+                        {{-- <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/6)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 6) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 6) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
+                            </div>
+                        </div>
+
+                        @if (!$cekProfitJD)
+                            @if ($transaksiCount >= 6)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim-jd?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 6 -->
                     @if (auth()->user()->level === '6')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/30)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Director</strong>
+                                ({{ $countReferal }}/15625)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 30) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 30) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Junior Director
+                                style="width: {{ ($countReferal / 15625) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 15625) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
+
+                        {{-- <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/11)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 11) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 11) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
+                            </div>
+                        </div>
+
+                        @if (!$cekProfitDirector)
+                            @if ($transaksiCount >= 11)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim-director?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 7 -->
                     @if (auth()->user()->level === '7')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/35)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Senior Director</strong>
+                                ({{ $countReferal }}/78125)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 35) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 35) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Director
+                                style="width: {{ ($countReferal / 78125) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 78125) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
+
+                        {{-- <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/16)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 16) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 16) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
+                            </div>
+                        </div>
+
+                        @if (!$cekProfitSD)
+                            @if ($transaksiCount >= 16)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim-sd?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 8 -->
                     @if (auth()->user()->level === '8')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/40)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Presiden Director</strong>
+                                ({{ $countReferal }}/390625)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 40) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 40) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Senior Director
+                                style="width: {{ ($countReferal / 390625) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 390625) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
+
+                        {{-- <br>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/21)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
+                                style="width: {{ ($transaksiCount / 21) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 21) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
+                            </div>
+                        </div>
+
+                        @if (!$cekProfitPD)
+                            @if ($transaksiCount >= 21)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST" action="{{ url('profit-klaim-pd?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
 
                     <!-- Level 9 -->
                     @if (auth()->user()->level === '9')
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/45)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Menuju Level <strong>Retirement</strong>
+                                ({{ $countReferal }}/1953125)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 45) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 45) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Presiden Director
+                                style="width: {{ ($countReferal / 1953125) * 100 }}%"
+                                aria-valuenow="{{ ($countReferal / 1953125) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $countReferal }}
                             </div>
                         </div>
-                    @endif
 
-                    <!-- Level 10 -->
-                    @if (auth()->user()->level === '10')
+                        {{-- <br>
                         <div class="flex justify-between mb-1">
-                            <span class="text-base font-medium text-blue-700 dark:text-white">Jaringan Anda
-                                ({{ $countReferal }}/50)</span>
+                            <span class="text-base font-medium text-blue-700 dark:text-white">
+                                Beli 1 produk apapun untuk klaim reward tambahan
+                                ({{ $transaksiCount }}/26)</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-primary text-sm h-2.5 rounded-full text-center text-white"
-                                style="width: {{ ($countReferal / 50) * 100 }}%"
-                                aria-valuenow="{{ ($countReferal / 50) * 100 }}" aria-valuemin="0"
-                                aria-valuemax="{{ 100 }}">Retirement
+                                style="width: {{ ($transaksiCount / 26) * 100 }}%"
+                                aria-valuenow="{{ ($transaksiCount / 26) * 100 }}" aria-valuemin="0"
+                                aria-valuemax="{{ 100 }}">{{ $transaksiCount }}
                             </div>
                         </div>
+
+                        @if (!$cekProfitRetirement)
+                            @if ($transaksiCount >= 26)
+                                <div class="p-4 h-72 z-10 flex flex-col items-center justify-end h-full relative mb-4">
+                                    <div class="absolute">
+                                        <form method="POST"
+                                            action="{{ url('profit-klaim-retirement?ref=' . request('ref')) }}">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <button type="submit" onclick="disableButton()"
+                                                class="px-4 py-2 text-xs text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
+                                                Klaim
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif --}}
                     @endif
                 </div>
             @endif
@@ -302,7 +486,8 @@
                         </a>
                     @endif
 
-                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                    <a href="{{ url('poin?ref=' . request('ref')) }}"
+                        class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                         <div>
                             <h6
                                 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
@@ -322,7 +507,8 @@
                         </div>
                     </a>
 
-                    <a href="#" class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
+                    <a href="{{ url('share-profit?ref=' . request('ref')) }}"
+                        class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
                         <div>
                             <h6
                                 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
@@ -646,6 +832,13 @@
             document.execCommand("copy");
             copyText.style.display = "none"; // Hide the input field again
             alert("Link copied to clipboard!");
+        }
+    </script>
+
+    <script>
+        function disableButton() {
+            document.getElementById('klaimForm').submit(); // Mengirim formulir setelah tombol diklik
+            document.getElementById('klaimButton').disabled = true; // Menonaktifkan tombol
         }
     </script>
 @endpush

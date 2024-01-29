@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('atas_nama')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('poin')->nullable();
             $table->string('saldo')->nullable();
             $table->enum('status_akun', ['Member', 'Calon Member', 'Admin']);
             $table->rememberToken();

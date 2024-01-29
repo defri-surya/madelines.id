@@ -34,6 +34,9 @@ Route::middleware(['guest', 'referral'])->group(function () {
         ->name('password.update');
 });
 
+Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+
 Route::middleware(['auth', 'referral'])->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
         ->name('verification.notice');
